@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رافن — أنمي بدون حدود</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest/dist/hls.min.js"></script>
+<style>
+/* ==============================
+   RAFN — DESIGN SYSTEM
+============================== */
+:root {
+  --bg:      #080c12;
+  --bg2:     #0d1220;
+  --bg3:     #121928;
+  --surface: #18223a;
+  --surface2:#1e2a45;
+  --border:  rgba(255,255,255,0.055);
+  --border2: rgba(255,255,255,0.10);
+  --accent:  #e8352a;
+  --accent2: #ff5246;
+  --glow:    rgba(232,53,42,0.18);
+  --text:    #edf1ff;
+  --text2:   #8898b5;
+  --text3:   #4a5a78;
+  --gold:    #f5c518;
+  --green:   #22c55e;
+  --font:    'IBM Plex Sans Arabic', sans-serif;
+  --r:       10px;
+  --r2:      16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;right:0;left:0;z-index:500;height:60px;background:rgba(8,12,18,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1.25rem;padding:0 2rem}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.85rem;color:var(--accent);letter-spacing:3px;cursor:pointer;text-shadow:0 0 28px rgba(232,53,42,.5);flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:.1rem;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:.875rem;padding:.42rem .82rem;border-radius:8px;transition:all .2s;cursor:pointer;white-space:nowrap}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--surface)}
+.nav-links a.active{color:var(--accent)}
+.nav-search{flex:1;max-width:360px;position:relative;margin-right:auto}
+.nav-search input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:.48rem 1rem .48rem 2.5rem;border-radius:50px;font-family:var(--font);font-size:.85rem;outline:none;transition:border-color .2s}
+.nav-search input:focus{border-color:var(--accent)}
+.nav-search input::placeholder{color:var(--text3)}
+.si{position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.85rem;pointer-events:none}
+.sdrop{position:absolute;top:calc(100% + 8px);right:0;left:0;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);overflow:hidden;z-index:600;display:none;max-height:400px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.65)}
+.sdrop.open{display:block}
+.si-item{display:flex;align-items:center;gap:.7rem;padding:.6rem 1rem;cursor:pointer;transition:background .15s}
+.si-item:hover{background:var(--surface)}
+.si-item img{width:36px;height:52px;object-fit:cover;border-radius:4px;flex-shrink:0}
+.si-ttl{font-size:.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-meta{font-size:.68rem;color:var(--text3);margin-top:2px}
+
+main{padding-top:60px}
+.page{display:none}.page.active{display:block}
+
+/* ── HERO ── */
+.hero{position:relative;height:570px;overflow:hidden;background:var(--bg2)}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 22%;filter:brightness(.26);transition:background-image .7s;transform:scale(1.05)}
+.hero-g{position:absolute;inset:0;background:linear-gradient(to left,transparent 18%,rgba(8,12,18,.72) 52%,var(--bg) 100%),linear-gradient(to top,var(--bg) 0%,transparent 30%)}
+.hero-c{position:relative;z-index:2;padding:0 3rem;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:4.5rem;max-width:640px}
+.hero-badge{display:inline-flex;align-items:center;gap:.3rem;background:var(--accent);color:#fff;font-size:.65rem;font-weight:700;padding:.25rem .72rem;border-radius:50px;margin-bottom:.85rem;width:fit-content;letter-spacing:.5px;text-transform:uppercase}
+.hero-title{font-size:2.55rem;font-weight:800;line-height:1.14;margin-bottom:.55rem;text-shadow:0 2px 28px rgba(0,0,0,.55)}
+.hero-desc{font-size:.86rem;color:var(--text2);line-height:1.78;margin-bottom:1.2rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hero-meta{display:flex;align-items:center;gap:.85rem;margin-bottom:1.35rem;flex-wrap:wrap}
+.hero-meta span{font-size:.77rem;color:var(--text2);display:flex;align-items:center;gap:.25rem}
+.hero-meta .sc{color:var(--gold);font-weight:700}
+.hero-btns{display:flex;gap:.6rem;flex-wrap:wrap}
+.hero-dots{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;z-index:3}
+.h-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);cursor:pointer;transition:all .3s}
+.h-dot.active{background:var(--accent);width:22px;border-radius:3px}
+
+/* ── BUTTONS ── */
+.bp{display:inline-flex;align-items:center;gap:.42rem;background:var(--accent);color:#fff;border:none;padding:.68rem 1.45rem;border-radius:50px;font-family:var(--font);font-size:.875rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.bp:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px var(--glow)}
+.bo{display:inline-flex;align-items:center;gap:.42rem;background:rgba(255,255,255,.07);color:var(--text);border:1px solid var(--border2);padding:.68rem 1.3rem;border-radius:50px;font-family:var(--font);font-size:.875rem;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);white-space:nowrap}
+.bo:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2)}
+
+/* ── SECTIONS ── */
+section{padding:2.25rem 2rem;max-width:1480px;margin:0 auto}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.15rem}
+.st{font-size:1.08rem;font-weight:700;display:flex;align-items:center;gap:.55rem}
+.st::before{content:'';display:inline-block;width:3px;height:1em;background:var(--accent);border-radius:2px}
+.sa{font-size:.77rem;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:.25rem;transition:opacity .2s}
+.sa:hover{opacity:.7}
+
+/* ── GRID + CAROUSEL ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem}
+.grid.lg{grid-template-columns:repeat(auto-fill,minmax(175px,1fr))}
+.row{display:flex;gap:1rem;overflow-x:auto;padding-bottom:.5rem;scrollbar-width:thin;scrollbar-color:var(--surface2) transparent;-webkit-overflow-scrolling:touch}
+.row::-webkit-scrollbar{height:4px}.row::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+.row .card{flex:0 0 158px}
+
+/* ── CARD ── */
+.card{cursor:pointer;border-radius:var(--r);overflow:hidden;background:var(--surface);transition:transform .25s,box-shadow .25s;position:relative}
+.card:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 18px 42px rgba(0,0,0,.6);z-index:1}
+.cp{position:relative;aspect-ratio:2/3;overflow:hidden}
+.cp img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+.card:hover .cp img{transform:scale(1.07)}
+.co{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,12,18,.95) 0%,transparent 55%);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center}
+.card:hover .co{opacity:1}
+.pc{width:46px;height:46px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.15rem;box-shadow:0 4px 20px var(--glow);margin-bottom:1.6rem}
+.sb2{position:absolute;top:.42rem;right:.42rem;background:rgba(0,0,0,.84);backdrop-filter:blur(4px);color:var(--gold);font-size:.62rem;font-weight:700;padding:.16rem .4rem;border-radius:5px}
+.tb{position:absolute;top:.42rem;left:.42rem;background:var(--accent);color:#fff;font-size:.58rem;font-weight:700;padding:.16rem .4rem;border-radius:5px}
+.ci{padding:.58rem .62rem .72rem}
+.cn{font-size:.78rem;font-weight:600;line-height:1.35;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.25rem}
+.cm{font-size:.65rem;color:var(--text3);display:flex;align-items:center;gap:.38rem}
+
+/* ── DETAILS ── */
+.dh{position:relative;min-height:450px;overflow:hidden}
+.db{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.16) blur(12px);transform:scale(1.07)}
+.dg{position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,rgba(8,12,18,.5) 60%,transparent 100%)}
+.dc{position:relative;z-index:2;padding:6rem 2.5rem 2.5rem;display:flex;gap:2.5rem;max-width:1200px;margin:0 auto}
+.dp{flex-shrink:0;width:195px}.dp img{width:100%;border-radius:var(--r2);box-shadow:0 20px 60px rgba(0,0,0,.75)}
+.di{flex:1}
+.dt{font-size:2rem;font-weight:800;line-height:1.18;margin-bottom:.32rem}
+.de{font-size:.88rem;color:var(--text3);margin-bottom:.95rem;font-style:italic}
+.ds{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.sp{display:flex;align-items:center;gap:.32rem;background:var(--surface);border:1px solid var(--border);padding:.32rem .78rem;border-radius:50px;font-size:.75rem}
+.sp .l{color:var(--text3)}.sp .v{color:var(--text);font-weight:600}
+.sp .v.gold{color:var(--gold)}.sp .v.green{color:var(--green)}
+.dge{display:flex;flex-wrap:wrap;gap:.32rem;margin-bottom:1rem}
+.gt{font-size:.7rem;padding:.25rem .65rem;border-radius:50px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .2s}
+.gt:hover{border-color:var(--accent);color:var(--accent)}
+.syn{font-size:.85rem;line-height:1.85;color:var(--text2);margin-bottom:1.35rem}
+
+/* ── EPISODES ── */
+.ep-sec{padding:1.5rem 2.5rem 2.5rem;max-width:1200px;margin:0 auto}
+.epg{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:.6rem}
+.epc{display:flex;align-items:center;gap:.68rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.72rem;cursor:pointer;transition:all .2s}
+.epc:hover{border-color:var(--accent);background:var(--surface2);transform:translateX(-3px)}
+.epc.active{border-color:var(--accent);background:rgba(232,53,42,.08)}
+.en{width:42px;height:42px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:var(--accent);flex-shrink:0}
+.epc.active .en{background:var(--accent);color:#fff}
+.ei{flex:1;min-width:0}
+.ett{font-size:.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.18rem}
+.em{font-size:.68rem;color:var(--text3)}
+.eico{color:var(--text3);font-size:.95rem;flex-shrink:0;transition:color .2s}
+.epc:hover .eico,.epc.active .eico{color:var(--accent)}
+
+/* ── WATCH PAGE ── */
+.wl{display:grid;grid-template-columns:1fr 335px;min-height:calc(100vh - 60px)}
+.wm{background:#000;display:flex;flex-direction:column}
+
+/* ── RAFN PLAYER ── */
+.player{width:100%;aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
+video#rv{width:100%;height:100%;display:block;background:#000}
+
+/* Loading overlay */
+.pl-load{position:absolute;inset:0;background:#000;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;transition:opacity .45s,visibility .45s}
+.pl-load.hide{opacity:0;visibility:hidden}
+.pl-spin{width:52px;height:52px;border:3px solid rgba(255,255,255,.08);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pl-anime{font-size:.95rem;font-weight:600;color:var(--text2);text-align:center;max-width:280px}
+.pl-ep{font-size:.75rem;color:var(--accent);margin-top:.1rem}
+.pl-status{font-size:.72rem;color:var(--text3);margin-top:.35rem;min-height:1.2em;text-align:center}
+
+/* Error overlay */
+.pl-err{position:absolute;inset:0;background:var(--bg2);z-index:21;display:none;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;padding:2rem;text-align:center}
+.pl-err.show{display:flex}
+.pl-err-icon{font-size:2.8rem;opacity:.4}
+.pl-err p{font-size:.86rem;color:var(--text2);line-height:1.65;max-width:320px}
+
+/* Controls */
+.pl-ctrl-grad{position:absolute;bottom:0;left:0;right:0;height:130px;background:linear-gradient(to top,rgba(0,0,0,.92),transparent);pointer-events:none;z-index:9;transition:opacity .35s}
+.pl-ctrl{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:0 .9rem .65rem;transition:opacity .35s,transform .35s}
+.player.hidden-ctrl .pl-ctrl,.player.hidden-ctrl .pl-ctrl-grad{opacity:0;pointer-events:none}
+.player.hidden-ctrl{cursor:none}
+
+/* Progress */
+.prog-wrap{width:100%;padding:8px 0;cursor:pointer;position:relative;margin-bottom:2px}
+.prog-track{height:3px;background:rgba(255,255,255,.15);border-radius:99px;position:relative;transition:height .2s}
+.prog-wrap:hover .prog-track{height:5px}
+.prog-buf{position:absolute;top:0;left:0;bottom:0;background:rgba(255,255,255,.2);border-radius:99px;width:0%;transition:width .5s}
+.prog-fill{position:absolute;top:0;left:0;bottom:0;background:var(--accent);border-radius:99px;width:0%;box-shadow:0 0 6px rgba(232,53,42,.5)}
+.prog-thumb{position:absolute;top:50%;transform:translate(-50%,-50%) scale(0);width:13px;height:13px;background:#fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.5);transition:transform .2s;pointer-events:none}
+.prog-wrap:hover .prog-thumb{transform:translate(-50%,-50%) scale(1)}
+.prog-tt{position:absolute;bottom:calc(100% + 7px);transform:translateX(-50%);background:rgba(0,0,0,.88);border:1px solid var(--border);border-radius:5px;padding:.22rem .55rem;font-size:.7rem;font-weight:600;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s}
+.prog-wrap:hover .prog-tt{opacity:1}
+
+/* Ctrl row */
+.ctrl-row{display:flex;align-items:center;justify-content:space-between}
+.ctrl-l,.ctrl-r{display:flex;align-items:center;gap:.25rem}
+.cb{width:36px;height:36px;border:none;background:transparent;color:var(--text);border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s;flex-shrink:0}
+.cb:hover{background:rgba(255,255,255,.1)}
+.cb:active{transform:scale(.88)}
+.cb svg{width:19px;height:19px;fill:currentColor}
+.cb.play{width:40px;height:40px}.cb.play svg{width:23px;height:23px}
+.cb.on{color:var(--accent)}
+.vol-wrap{display:flex;align-items:center;gap:.35rem}
+.vol-sl{-webkit-appearance:none;width:0;max-width:0;height:3px;border-radius:2px;background:rgba(255,255,255,.2);outline:none;cursor:pointer;transition:max-width .28s,width .28s}
+.vol-wrap:hover .vol-sl,.vol-wrap:focus-within .vol-sl{max-width:72px;width:72px}
+.vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:-80px 0 0 80px var(--accent)}
+.time-d{font-size:.74rem;color:var(--text2);font-variant-numeric:tabular-nums;white-space:nowrap;padding:0 .2rem}
+.time-d span{color:var(--text);font-weight:600}
+
+/* Skip btn */
+.skip-btn{position:absolute;bottom:72px;left:2rem;background:rgba(232,53,42,.15);border:1.5px solid var(--accent);color:var(--text);padding:.5rem 1.3rem;border-radius:50px;font-family:var(--font);font-size:.82rem;font-weight:600;cursor:pointer;z-index:50;backdrop-filter:blur(8px);transition:background .2s;display:none;align-items:center;gap:.45rem}
+.skip-btn.show{display:flex}
+.skip-btn:hover{background:var(--accent)}
+
+/* Title bar */
+.pl-tbar{position:absolute;top:0;left:0;right:0;padding:.85rem 1.1rem;background:linear-gradient(to bottom,rgba(0,0,0,.75),transparent);z-index:10;display:flex;align-items:center;justify-content:space-between;transition:opacity .35s}
+.player.hidden-ctrl .pl-tbar{opacity:0}
+.pl-anime-name{font-size:.68rem;color:var(--text3)}
+.pl-ep-name{font-size:.86rem;font-weight:600;color:var(--text);margin-top:1px}
+.pl-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--accent);letter-spacing:2px;opacity:.65}
+
+/* Ripple */
+.pl-ripple{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:20}
+.rp-circle{width:78px;height:78px;border-radius:50%;background:rgba(232,53,42,.12);border:2px solid rgba(232,53,42,.55);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.55);transition:opacity .22s,transform .22s}
+.rp-circle.show{opacity:1;transform:scale(1)}
+.rp-circle.hide{opacity:0;transform:scale(1.42);transition:opacity .38s,transform .38s}
+.rp-circle svg{fill:#fff;width:30px;height:30px}
+
+/* Seek hint */
+.seek-l,.seek-r{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.72);border-radius:9px;padding:.55rem 1.1rem;font-size:.95rem;font-weight:600;pointer-events:none;opacity:0;transition:opacity .2s;z-index:30;white-space:nowrap;backdrop-filter:blur(8px);border:1px solid var(--border)}
+.seek-l{left:14%}.seek-r{right:14%}
+.seek-l.show,.seek-r.show{opacity:1}
+
+/* Kbd hint */
+.kbd-hint{position:absolute;top:.9rem;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);border:1px solid var(--border);border-radius:7px;padding:.45rem .9rem;font-size:.75rem;color:var(--text2);z-index:80;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;backdrop-filter:blur(8px)}
+.kbd-hint.show{opacity:1}
+
+/* Settings panel */
+.settings-panel{position:absolute;bottom:calc(48px + 6px);left:.9rem;background:rgba(10,14,22,.97);border:1px solid var(--border);border-radius:11px;padding:.45rem;min-width:190px;z-index:60;backdrop-filter:blur(18px);display:none;box-shadow:0 16px 48px rgba(0,0,0,.75)}
+.settings-panel.open{display:block}
+.sp-section{padding:.45rem .7rem}
+.sp-label{font-size:.6rem;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:.42rem;font-weight:600}
+.sp-opts{display:flex;flex-direction:column;gap:.15rem}
+.sp-opt{padding:.4rem .6rem;border-radius:7px;font-size:.8rem;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:space-between;color:var(--text2)}
+.sp-opt:hover{background:rgba(255,255,255,.07);color:var(--text)}
+.sp-opt.active{color:var(--accent);background:rgba(232,53,42,.08)}
+.sp-opt .ck{font-size:.72rem;opacity:0}.sp-opt.active .ck{opacity:1}
+.sp-div{height:1px;background:var(--border);margin:.35rem 0}
+
+/* Server bar */
+.srv-bar{background:var(--bg2);border-top:1px solid var(--border);padding:.55rem 1.4rem;display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.srv-lbl{font-size:.7rem;color:var(--text3);font-weight:600;flex-shrink:0}
+.srv-btn{padding:.28rem .75rem;border-radius:50px;font-size:.7rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-family:var(--font);transition:all .2s;white-space:nowrap}
+.srv-btn:hover{border-color:var(--border2);color:var(--text)}
+.srv-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* Watch info */
+.wi{padding:1rem 1.5rem;background:var(--bg2);border-top:1px solid var(--border)}
+.wi-ep{font-size:.98rem;font-weight:700;margin-bottom:.28rem}
+.wi-ttl{font-size:.8rem;color:var(--accent);cursor:pointer;margin-bottom:.8rem;display:inline-block}
+.wi-ttl:hover{text-decoration:underline}
+.wi-nav{display:flex;gap:.55rem;flex-wrap:wrap}
+
+/* Sidebar */
+.ws{background:var(--bg2);border-right:1px solid var(--border);height:calc(100vh - 60px);position:sticky;top:60px;display:flex;flex-direction:column;overflow:hidden}
+.ws-hd{padding:.85rem 1.05rem;font-size:.8rem;font-weight:700;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;color:var(--text2)}
+.ws-list{flex:1;overflow-y:auto;padding:.35rem}
+.ws-list::-webkit-scrollbar{width:3px}.ws-list::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+.sep{display:flex;align-items:center;gap:.5rem;padding:.5rem .65rem;border-radius:7px;cursor:pointer;transition:background .15s}
+.sep:hover{background:var(--surface)}
+.sep.active{background:rgba(232,53,42,.1)}
+.sep-n{font-size:.65rem;font-weight:700;color:var(--text3);min-width:24px;flex-shrink:0}
+.sep.active .sep-n{color:var(--accent)}
+.sep-t{font-size:.75rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sep.active .sep-t{color:var(--text);font-weight:600}
+.sep-p{font-size:.7rem;color:transparent;flex-shrink:0;transition:color .15s}
+.sep:hover .sep-p,.sep.active .sep-p{color:var(--accent)}
+
+/* filter */
+.fbar{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:1.35rem}
+.fc{padding:.38rem .88rem;border-radius:50px;font-size:.77rem;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);font-family:var(--font);transition:all .2s}
+.fc:hover{border-color:var(--border2);color:var(--text)}
+.fc.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* top table */
+.tt{width:100%;border-collapse:collapse}
+.tt tr{border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer}
+.tt tr:hover{background:var(--surface)}
+.tt td{padding:.7rem .45rem;font-size:.82rem;vertical-align:middle}
+.rn{font-size:1rem;font-weight:700;color:var(--text3);min-width:36px;text-align:center}
+.t3 .rn{color:var(--gold)}
+.tp{width:44px;height:62px;object-fit:cover;border-radius:5px}
+
+/* misc */
+.sinp{width:100%;background:var(--surface);border:2px solid var(--border2);color:var(--text);padding:.88rem 1.35rem;border-radius:var(--r);font-family:var(--font);font-size:.92rem;outline:none;transition:border-color .2s;margin-bottom:1.75rem}
+.sinp:focus{border-color:var(--accent)}.sinp::placeholder{color:var(--text3)}
+.sk{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shim 1.4s infinite;border-radius:6px}
+@keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-p{aspect-ratio:2/3}.sk-l{height:11px;margin:7px 0}.sk-l.s{width:55%}
+.empty{text-align:center;padding:4rem 2rem;color:var(--text3)}
+.empty .ico{font-size:2.8rem;margin-bottom:1rem;opacity:.35}
+.spinner{width:38px;height:38px;border:3px solid var(--surface2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:2rem auto}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:.65rem 1.35rem;border-radius:50px;font-size:.83rem;z-index:999;transition:transform .3s;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:768px){
+  nav{padding:0 1rem}.nav-links{display:none}.nav-search{max-width:175px}
+  .hero{height:400px}.hero-title{font-size:1.6rem}.hero-c{padding:0 1.2rem;padding-bottom:3.5rem}
+  section{padding:1.2rem .9rem}
+  .wl{grid-template-columns:1fr}.ws{display:none}
+  .dc{flex-direction:column;padding:4.5rem 1rem 2rem}.dp{width:125px}
+  .ep-sec{padding:1rem}.epg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo" onclick="showPage('home')">RAFN</span>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" class="active" id="nav-home">الرئيسية</a></li>
+    <li><a onclick="showPage('browse')" id="nav-browse">تصفح</a></li>
+    <li><a onclick="showPage('top')" id="nav-top">الأفضل</a></li>
+    <li><a onclick="showPage('seasonal')" id="nav-seasonal">موسمي</a></li>
+  </ul>
+  <div class="nav-search">
+    <span class="si">🔍</span>
+    <input type="text" placeholder="ابحث عن أنمي..." id="searchInput" autocomplete="off">
+    <div class="sdrop" id="sdrop"></div>
+  </div>
+</nav>
+
+<main>
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-g"></div>
+    <div class="hero-c">
+      <div class="hero-badge" id="heroBadge">🔥 يُبث الآن</div>
+      <h1 class="hero-title" id="heroTitle">جاري التحميل...</h1>
+      <p class="hero-desc" id="heroDesc"></p>
+      <div class="hero-meta" id="heroMeta"></div>
+      <div class="hero-btns">
+        <button class="bp" onclick="watchHero()">▶ شاهد الآن</button>
+        <button class="bo" onclick="detailsHero()">📋 التفاصيل</button>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+  </div>
+  <section>
+    <div class="sh"><h2 class="st">يُبث الآن</h2><a class="sa" onclick="showPage('seasonal')">عرض الكل ←</a></div>
+    <div class="row" id="airingRow">${sk(6,true)}</div>
+  </section>
+  <section>
+    <div class="sh"><h2 class="st">الأكثر شهرة</h2><a class="sa" onclick="showPage('top')">عرض الكل ←</a></div>
+    <div class="grid" id="popularGrid">${sk(8)}</div>
+  </section>
+  <section>
+    <div class="sh"><h2 class="st">أفلام الأنمي</h2><a class="sa" onclick="browseByType('Movie')">عرض الكل ←</a></div>
+    <div class="row" id="moviesRow">${sk(6,true)}</div>
+  </section>
+</div>
+
+<!-- BROWSE -->
+<div class="page" id="page-browse">
+  <section>
+    <h1 style="font-size:1.42rem;font-weight:800;margin-bottom:1.35rem">تصفح الأنمي</h1>
+    <div class="fbar">
+      <button class="fc active" onclick="filterBrowse('all',this)">الكل</button>
+      <button class="fc" onclick="filterBrowse('action',this)">أكشن</button>
+      <button class="fc" onclick="filterBrowse('adventure',this)">مغامرة</button>
+      <button class="fc" onclick="filterBrowse('comedy',this)">كوميدي</button>
+      <button class="fc" onclick="filterBrowse('drama',this)">دراما</button>
+      <button class="fc" onclick="filterBrowse('fantasy',this)">خيال</button>
+      <button class="fc" onclick="filterBrowse('horror',this)">رعب</button>
+      <button class="fc" onclick="filterBrowse('romance',this)">رومانسي</button>
+      <button class="fc" onclick="filterBrowse('sci-fi',this)">خيال علمي</button>
+      <button class="fc" onclick="filterBrowse('sports',this)">رياضة</button>
+      <button class="fc" onclick="filterBrowse('supernatural',this)">خارق</button>
+      <button class="fc" onclick="filterBrowse('mystery',this)">غموض</button>
+      <button class="fc" onclick="filterBrowse('mecha',this)">ميكا</button>
+    </div>
+    <div class="grid lg" id="browseGrid"><div class="spinner"></div></div>
+  </section>
+</div>
+
+<!-- TOP -->
+<div class="page" id="page-top">
+  <section>
+    <h1 style="font-size:1.42rem;font-weight:800;margin-bottom:1.35rem">🏆 أعلى تقييماً</h1>
+    <div id="topContent"><div class="spinner"></div></div>
+  </section>
+</div>
+
+<!-- SEASONAL -->
+<div class="page" id="page-seasonal">
+  <section>
+    <h1 style="font-size:1.42rem;font-weight:800;margin-bottom:1.35rem" id="seasonTitle">📅 الموسم الحالي</h1>
+    <div class="grid lg" id="seasonGrid"><div class="spinner"></div></div>
+  </section>
+</div>
+
+<!-- SEARCH -->
+<div class="page" id="page-search">
+  <section>
+    <h1 style="font-size:1.42rem;font-weight:800;margin-bottom:1.2rem">🔍 البحث</h1>
+    <input class="sinp" id="searchPageInput" placeholder="ابحث عن أنمي..." oninput="searchPage(this.value)">
+    <div class="grid lg" id="searchGrid"><div class="empty"><div class="ico">🔍</div><p>ابحث عن أي أنمي</p></div></div>
+  </section>
+</div>
+
+<!-- DETAILS -->
+<div class="page" id="page-details"><div id="detContent"></div></div>
+
+<!-- WATCH -->
+<div class="page" id="page-watch"><div id="watchContent"></div></div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════
+//  ⚙️  CONFIG — سيرفرك على Render
+// ════════════════════════════════════════
+const RAFN_SERVER = 'https://animepahe-api-zqk1.onrender.com';
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+let currentAnime = null;
+let currentEpisode = 1;
+let heroAnimes = [], heroIndex = 0, heroTimer = null;
+let searchTimer = null, searchPageTimer = null;
+const apiCache = {};
+
+// Player state
+let hls = null, isPlaying = false, isMuted = false, isDragging = false;
+let speed = 1, skipStart = 85, skipEnd = 175, skipEnabled = false;
+let ctrlTimer = null, kbdTimer = null;
+
+// ════════════════════════════════════════
+//  SKELETON HELPER
+// ════════════════════════════════════════
+function sk(n, carousel=false) {
+  return Array.from({length:n}, () =>
+    carousel
+      ? `<div class="card sk" style="flex:0 0 158px"><div class="sk sk-p"></div></div>`
+      : `<div class="card sk"><div class="sk sk-p"></div><div style="padding:.6rem"><div class="sk sk-l"></div><div class="sk sk-l s"></div></div></div>`
+  ).join('');
+}
+
+// ════════════════════════════════════════
+//  JIKAN API
+// ════════════════════════════════════════
+const JIKAN = 'https://api.jikan.moe/v4';
+async function jikan(path, params={}) {
+  const key = path + JSON.stringify(params);
+  if (apiCache[key]) return apiCache[key];
+  const url = new URL(JIKAN + path);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw 0;
+    const d = await r.json();
+    apiCache[key] = d;
+    return d;
+  } catch { return null; }
+}
+
+// ════════════════════════════════════════
+//  RAFN SERVER — AnimePahe Integration
+//  الخطوات: بحث → جلب الحلقات → جلب رابط البث
+// ════════════════════════════════════════
+
+// كاش لتسريع الطلبات
+const paheCache = {};
+
+async function pahe(path) {
+  if (paheCache[path]) return paheCache[path];
+  try {
+    const r = await fetch(RAFN_SERVER + path);
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    paheCache[path] = d;
+    return d;
+  } catch(e) {
+    console.error('[AnimePahe]', path, e);
+    return null;
+  }
+}
+
+// الخطوة 1: ابحث عن الأنمي في AnimePahe بالاسم
+async function paheSearch(title) {
+  const clean = title.replace(/[^a-zA-Z0-9\u0600-\u06FF\s]/g, '').trim();
+  const d = await pahe(`/api/search?q=${encodeURIComponent(clean)}`);
+  return d?.data || [];
+}
+
+// الخطوة 2: جيب قائمة الحلقات بالـ session
+async function paheReleases(session, epNum) {
+  // نحسب الصفحة الصحيحة (12 حلقة في كل صفحة)
+  const page = Math.ceil(epNum / 12);
+  const d = await pahe(`/api/${session}/releases?sort=episode_asc&page=${page}`);
+  return d?.data || [];
+}
+
+// الخطوة 3: جيب رابط البث
+async function pahePlay(animeSession, episodeId) {
+  const d = await pahe(`/api/play/${animeSession}?episodeId=${episodeId}&downloads=false`);
+  return d;
+}
+
+// الدالة الرئيسية — تجمع كل الخطوات
+async function rafnGetStream(anime, epNum) {
+  const title = anime.title_english || anime.title || '';
+  const titleRomaji = anime.title || '';
+
+  try {
+    setStatus('🔍 جاري البحث في AnimePahe...');
+
+    // --- الخطوة 1: بحث ---
+    let results = await paheSearch(title);
+    if (!results.length && title !== titleRomaji) {
+      results = await paheSearch(titleRomaji);
+    }
+    if (!results.length) {
+      // جرب بأول كلمتين من الاسم
+      const short = title.split(' ').slice(0,2).join(' ');
+      results = await paheSearch(short);
+    }
+    if (!results.length) return null;
+
+    // اختار أقرب نتيجة
+    const match = results[0];
+    const animeSession = match.session;
+    setStatus(`✅ وُجد: ${match.title} — جاري تحميل الحلقة ${epNum}...`);
+
+    // --- الخطوة 2: جيب الحلقات ---
+    const episodes = await paheReleases(animeSession, epNum);
+    if (!episodes.length) return null;
+
+    // ابحث عن الحلقة الصحيحة بالرقم
+    let ep = episodes.find(e => e.episode == epNum || e.episode2 == epNum);
+    if (!ep) ep = episodes[0]; // خذ الأولى إن لم تُوجد
+
+    const episodeId = ep.session;
+    setStatus('🎬 جاري جلب رابط البث...');
+
+    // --- الخطوة 3: جيب رابط البث ---
+    const playData = await pahePlay(animeSession, episodeId);
+    if (!playData?.sources?.length) return null;
+
+    // اختار أعلى جودة متاحة
+    const sources = playData.sources;
+    const best = sources.find(s => s.quality === '1080p')
+               || sources.find(s => s.quality === '720p')
+               || sources[0];
+
+    return {
+      url: best.url,
+      quality: best.quality || 'auto',
+      source: 'AnimePahe',
+      headers: playData.headers || {},
+      allSources: sources,
+      animeSession,
+      episodeId,
+    };
+
+  } catch(e) {
+    console.error('[RAFN Stream]', e);
+    return null;
+  }
+}
+
+// ════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const nav = document.getElementById('nav-' + name);
+  if (nav) nav.classList.add('active');
+  window.scrollTo(0, 0);
+  if (name==='browse' && !document.getElementById('browseGrid').querySelector('.card')) loadBrowse('all');
+  if (name==='top' && !document.getElementById('topContent').querySelector('table')) loadTop();
+  if (name==='seasonal' && !document.getElementById('seasonGrid').querySelector('.card')) loadSeasonal();
+}
+
+// ════════════════════════════════════════
+//  HOME
+// ════════════════════════════════════════
+async function initHome() {
+  const [airing, popular, movies] = await Promise.all([
+    jikan('/anime', { status:'airing', order_by:'popularity', sort:'asc', limit:20 }),
+    jikan('/top/anime', { type:'tv', limit:18 }),
+    jikan('/anime', { type:'movie', order_by:'popularity', sort:'asc', limit:16 }),
+  ]);
+  if (airing?.data) {
+    heroAnimes = airing.data.slice(0, 6);
+    buildHero(); startHeroRotation();
+    buildRow('airingRow', airing.data);
+  }
+  if (popular?.data) buildGrid('popularGrid', popular.data);
+  if (movies?.data) buildRow('moviesRow', movies.data);
+}
+function buildHero() {
+  const a = heroAnimes[heroIndex]; if (!a) return;
+  document.getElementById('heroBg').style.backgroundImage = `url(${gi(a)})`;
+  document.getElementById('heroTitle').textContent = a.title||'';
+  document.getElementById('heroDesc').textContent = a.synopsis||'';
+  document.getElementById('heroBadge').textContent = '🔥 '+(a.type||'أنمي');
+  document.getElementById('heroMeta').innerHTML = `
+    <span class="sc">⭐ ${a.score||'?'}</span>
+    <span>📅 ${a.year||'?'}</span>
+    <span>🎬 ${a.episodes||'?'} حلقة</span>
+    ${a.status==='Currently Airing'?'<span style="color:var(--green)">● يُبث الآن</span>':''}`;
+  document.getElementById('heroDots').innerHTML = heroAnimes.map((_,i) =>
+    `<div class="h-dot ${i===heroIndex?'active':''}" onclick="goHero(${i})"></div>`).join('');
+}
+function goHero(i) { heroIndex=i; clearTimeout(heroTimer); buildHero(); startHeroRotation(); }
+function startHeroRotation() {
+  heroTimer = setTimeout(() => { heroIndex=(heroIndex+1)%heroAnimes.length; buildHero(); startHeroRotation(); }, 5500);
+}
+function watchHero() { if (heroAnimes[heroIndex]) openAnime(heroAnimes[heroIndex]); }
+function detailsHero() { if (heroAnimes[heroIndex]) openDetails(heroAnimes[heroIndex]); }
+
+// ════════════════════════════════════════
+//  CARDS
+// ════════════════════════════════════════
+function gi(a) { return a.images?.jpg?.large_image_url || a.images?.jpg?.image_url || ''; }
+function enc(a) { return btoa(encodeURIComponent(JSON.stringify(a))); }
+function dec(s) { return JSON.parse(decodeURIComponent(atob(s))); }
+
+function buildCard(a, carousel=false) {
+  const e = enc(a);
+  return `<div class="card" onclick="handleCard('${e}')" ${carousel?'style="flex:0 0 158px"':''}>
+    <div class="cp">
+      <img src="${gi(a)}" alt="${a.title||''}" loading="lazy" onerror="this.style.display='none'">
+      <div class="co"><div class="pc">▶</div></div>
+      ${a.score?`<div class="sb2">⭐ ${a.score}</div>`:''}
+      ${a.type?`<div class="tb">${a.type}</div>`:''}
+    </div>
+    <div class="ci">
+      <div class="cn">${a.title||'—'}</div>
+      <div class="cm"><span>${a.year||''}</span>${a.episodes?`<span>· ${a.episodes} حلقة</span>`:''}</div>
+    </div>
+  </div>`;
+}
+function handleCard(e) { try { openDetails(dec(e)); } catch{} }
+function buildGrid(id, list) { document.getElementById(id).innerHTML = list.map(a=>buildCard(a)).join(''); }
+function buildRow(id, list) { document.getElementById(id).innerHTML = list.map(a=>buildCard(a,true)).join(''); }
+
+// ════════════════════════════════════════
+//  BROWSE / TOP / SEASONAL
+// ════════════════════════════════════════
+async function loadBrowse(g) {
+  const el = document.getElementById('browseGrid');
+  el.innerHTML = '<div class="spinner"></div>';
+  const p = g==='all'
+    ? { order_by:'popularity', sort:'asc', limit:24, type:'tv' }
+    : { genres:gid(g), order_by:'popularity', sort:'asc', limit:24 };
+  const d = await jikan('/anime', p);
+  d?.data?.length ? buildGrid('browseGrid', d.data) : (el.innerHTML='<div class="empty"><div class="ico">😔</div><p>لا نتائج</p></div>');
+}
+function filterBrowse(g, btn) {
+  document.querySelectorAll('.fc').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); loadBrowse(g);
+}
+function browseByType(type) {
+  showPage('browse');
+  const el = document.getElementById('browseGrid');
+  el.innerHTML = '<div class="spinner"></div>';
+  jikan('/anime', { type:type.toLowerCase(), order_by:'popularity', sort:'asc', limit:24 }).then(d => {
+    if (d?.data?.length) buildGrid('browseGrid', d.data);
+  });
+}
+function gid(g) { return {action:1,adventure:2,comedy:4,drama:8,fantasy:10,horror:14,romance:22,'sci-fi':24,sports:30,supernatural:37,mystery:7,mecha:18}[g]||1; }
+
+async function loadTop() {
+  const d = await jikan('/top/anime', { limit:50 });
+  if (!d?.data) return;
+  document.getElementById('topContent').innerHTML = `<table class="tt">
+    ${d.data.map((a,i) => `<tr class="${i<3?'t3':''}" onclick="handleCard('${enc(a)}')">
+      <td><div class="rn">${i+1}</div></td>
+      <td><img class="tp" src="${gi(a)}" onerror="this.style.display='none'"></td>
+      <td><div style="font-weight:600;font-size:.85rem;margin-bottom:.18rem">${a.title}</div><div style="font-size:.7rem;color:var(--text3)">${a.type||''} ${a.year?'· '+a.year:''}</div></td>
+      <td style="color:var(--gold);font-weight:700">⭐ ${a.score||'?'}</td>
+      <td style="color:var(--text3);font-size:.75rem">${a.members?(a.members/1000).toFixed(0)+'K':''}</td>
+    </tr>`).join('')}
+  </table>`;
+}
+
+async function loadSeasonal() {
+  const n=new Date(), y=n.getFullYear(), m=n.getMonth();
+  const s=m<3?'winter':m<6?'spring':m<9?'summer':'fall';
+  document.getElementById('seasonTitle').textContent = `📅 موسم ${y} — ${{winter:'شتاء',spring:'ربيع',summer:'صيف',fall:'خريف'}[s]}`;
+  const d = await jikan(`/seasons/${y}/${s}`, { limit:36 });
+  d?.data?.length ? buildGrid('seasonGrid', d.data) : (document.getElementById('seasonGrid').innerHTML='<div class="empty"><div class="ico">📅</div><p>لا يوجد</p></div>');
+}
+
+// ════════════════════════════════════════
+//  DETAILS
+// ════════════════════════════════════════
+async function openDetails(anime) {
+  currentAnime = anime; showPage('details');
+  const img = gi(anime), malId = anime.mal_id;
+  let full = anime;
+  if (malId) { const d = await jikan(`/anime/${malId}`); if (d?.data) full = d.data; }
+  const genres = (full.genres||[]).map(g=>`<span class="gt">${tg(g.name)}</span>`).join('');
+  const eps = Math.min(typeof full.episodes==='number'?full.episodes:parseInt(full.episodes)||12, 200);
+  document.getElementById('detContent').innerHTML = `
+    <div class="dh">
+      <div class="db" style="background-image:url(${img})"></div>
+      <div class="dg"></div>
+      <div class="dc">
+        <div class="dp"><img src="${img}" alt="${full.title}"></div>
+        <div class="di">
+          <h1 class="dt">${full.title||''}</h1>
+          <p class="de">${full.title_english||full.title_japanese||''}</p>
+          <div class="ds">
+            ${full.score?`<div class="sp"><span class="l">تقييم</span><span class="v gold">⭐ ${full.score}</span></div>`:''}
+            ${full.episodes?`<div class="sp"><span class="l">حلقات</span><span class="v">${full.episodes}</span></div>`:''}
+            ${full.status?`<div class="sp"><span class="l">الحالة</span><span class="v ${full.status==='Currently Airing'?'green':''}">${ts(full.status)}</span></div>`:''}
+            ${full.year?`<div class="sp"><span class="l">سنة</span><span class="v">${full.year}</span></div>`:''}
+            ${full.type?`<div class="sp"><span class="l">نوع</span><span class="v">${full.type}</span></div>`:''}
+          </div>
+          <div class="dge">${genres}</div>
+          <p class="syn">${full.synopsis||'لا يوجد وصف'}</p>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+            <button class="bp" onclick="watchAnime(1)">▶ شاهد الحلقة 1</button>
+            <button class="bo" id="favBtn-${malId}" onclick="toggleFav(${malId},'${(full.title||'').replace(/'/g,"\\'")}')">
+              ${isFav(malId)?'❤️ في المفضلة':'♡ المفضلة'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ep-sec">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <h2 class="st">الحلقات</h2>
+        <span style="color:var(--text3);font-size:.76rem">${eps} حلقة</span>
+      </div>
+      <div class="epg">
+        ${Array.from({length:eps},(_,i)=>{const n=i+1; return `
+          <div class="epc" onclick="watchAnime(${n})">
+            <div class="en">${n}</div>
+            <div class="ei"><div class="ett">الحلقة ${n}</div><div class="em">اضغط للمشاهدة</div></div>
+            <div class="eico">▶</div>
+          </div>`;}).join('')}
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════
+//  WATCH + RAFN PLAYER
+// ════════════════════════════════════════
+function watchAnime(ep) { currentEpisode=ep; showPage('watch'); buildWatch(); }
+function openAnime(a) { currentAnime=a; watchAnime(1); }
+
+function buildWatch() {
+  const a = currentAnime; if (!a) return;
+  const malId = a.mal_id, title = a.title||'—';
+  const eps = Math.min(typeof a.episodes==='number'?a.episodes:parseInt(a.episodes)||12, 200);
+
+  const sideEps = Array.from({length:eps},(_,i) => {
+    const n=i+1;
+    return `<div class="sep ${n===currentEpisode?'active':''}" id="sep-${n}" onclick="changeEp(${n})">
+      <span class="sep-n">${n}</span>
+      <span class="sep-t">الحلقة ${n}</span>
+      <span class="sep-p">▶</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('watchContent').innerHTML = `
+    <div class="wl">
+      <div class="wm">
+
+        <!-- ══ RAFN PLAYER ══ -->
+        <div class="player" id="playerWrap">
+
+          <!-- Title bar -->
+          <div class="pl-tbar">
+            <div><div class="pl-anime-name">${title}</div><div class="pl-ep-name">الحلقة ${currentEpisode}</div></div>
+            <div class="pl-logo">RAFN</div>
+          </div>
+
+          <!-- Loading overlay -->
+          <div class="pl-load" id="plLoad">
+            <div class="pl-spin"></div>
+            <div class="pl-anime">${title}</div>
+            <div class="pl-ep">الحلقة ${currentEpisode}</div>
+            <div class="pl-status" id="plStatus">جاري البحث عن الحلقة...</div>
+          </div>
+
+          <!-- Error overlay -->
+          <div class="pl-err" id="plErr">
+            <div class="pl-err-icon">⚠️</div>
+            <p id="plErrMsg">تعذّر تحميل الحلقة<br>تأكد من تشغيل السيرفر الخاص بك</p>
+            <button class="bp" style="margin-top:.5rem;font-size:.8rem" onclick="retryStream()">🔄 إعادة المحاولة</button>
+          </div>
+
+          <!-- Ripple -->
+          <div class="pl-ripple"><div class="rp-circle" id="ripple"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+
+          <!-- Seek hints -->
+          <div class="seek-l" id="seekL">⏪ -10 ثانية</div>
+          <div class="seek-r" id="seekR">⏩ +10 ثانية</div>
+
+          <!-- Kbd hint -->
+          <div class="kbd-hint" id="kbdHint"></div>
+
+          <!-- Skip btn -->
+          <div class="skip-btn" id="skipBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            تخطي الأوبنينج
+          </div>
+
+          <!-- Gradient + controls -->
+          <div class="pl-ctrl-grad"></div>
+          <div class="pl-ctrl" id="plCtrl">
+            <div class="prog-wrap" id="progWrap">
+              <div class="prog-track">
+                <div class="prog-buf" id="progBuf"></div>
+                <div class="prog-fill" id="progFill"></div>
+                <div class="prog-thumb" id="progThumb"></div>
+              </div>
+              <div class="prog-tt" id="progTt">0:00</div>
+            </div>
+            <div class="ctrl-row">
+              <div class="ctrl-l">
+                <button class="cb play" id="playBtn"><svg id="playIco" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+                <button class="cb" id="prevBtn" title="الحلقة السابقة"><svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+                <button class="cb" id="nextBtn" title="الحلقة التالية"><svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+                <div class="vol-wrap">
+                  <button class="cb" id="muteBtn"><svg id="volIco" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></button>
+                  <input type="range" class="vol-sl" id="volSl" min="0" max="1" step="0.05" value="1">
+                </div>
+                <div class="time-d"><span id="curTime">0:00</span> / <span id="totTime">0:00</span></div>
+              </div>
+              <div class="ctrl-r">
+                <button class="cb" id="settingsBtn"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94zM12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></button>
+                <button class="cb" id="pipBtn" title="PiP"><svg viewBox="0 0 24 24"><path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 1.99 2 1.99h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"/></svg></button>
+                <button class="cb" id="fsBtn"><svg id="fsIco" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings panel -->
+          <div class="settings-panel" id="settingsPanel">
+            <div class="sp-section">
+              <div class="sp-label">سرعة التشغيل</div>
+              <div class="sp-opts">
+                ${[0.5,0.75,1,1.25,1.5,2].map(s=>`<div class="sp-opt ${s===1?'active':''}" data-spd="${s}"><span>${s===1?'عادي':s+'×'}</span><span class="ck">✓</span></div>`).join('')}
+              </div>
+            </div>
+            <div class="sp-div"></div>
+            <div class="sp-section">
+              <div class="sp-label">الجودة</div>
+              <div class="sp-opts" id="qualOpts"><div class="sp-opt active"><span>تلقائي</span><span class="ck">✓</span></div></div>
+            </div>
+          </div>
+
+          <!-- Video -->
+          <video id="rv" preload="metadata" playsinline></video>
+        </div>
+        <!-- ══ END PLAYER ══ -->
+
+        <!-- Server switcher -->
+        <div class="srv-bar">
+          <span class="srv-lbl">المشغّل:</span>
+          <button class="srv-btn active" id="srvRafn" onclick="switchToRafn()">🎬 رافن (خاص)</button>
+          <button class="srv-btn" id="srvMiruro" onclick="switchToMiruro()">🌐 Miruro (احتياطي)</button>
+        </div>
+
+        <!-- Info -->
+        <div class="wi">
+          <div class="wi-ep">الحلقة ${currentEpisode} — ${title}</div>
+          <div class="wi-ttl" onclick="openDetails(currentAnime)">${title} ↗</div>
+          <div class="wi-nav">
+            ${currentEpisode>1?`<button class="bo" onclick="changeEp(${currentEpisode-1})" style="font-size:.77rem;padding:.42rem .92rem">← السابقة</button>`:''}
+            ${currentEpisode<eps?`<button class="bp" onclick="changeEp(${currentEpisode+1})" style="font-size:.77rem;padding:.42rem .92rem">التالية →</button>`:''}
+            <button class="bo" onclick="openDetails(currentAnime)" style="font-size:.77rem;padding:.42rem .92rem">📋 تفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="ws">
+        <div class="ws-hd"><span>قائمة الحلقات</span><span style="color:var(--text3)">${eps} حلقة</span></div>
+        <div class="ws-list" id="wsList">${sideEps}</div>
+      </div>
+    </div>`;
+
+  initPlayer();
+
+  setTimeout(() => {
+    const el = document.getElementById(`sep-${currentEpisode}`);
+    if (el) el.scrollIntoView({ block:'center', behavior:'smooth' });
+  }, 200);
+}
+
+// ════════════════════════════════════════
+//  PLAYER ENGINE
+// ════════════════════════════════════════
+function initPlayer() {
+  if (hls) { hls.destroy(); hls = null; }
+  isPlaying = false; isDragging = false; speed = 1;
+
+  const video  = document.getElementById('rv');
+  const wrap   = document.getElementById('playerWrap');
+  const playBtn= document.getElementById('playBtn');
+  const playIco= document.getElementById('playIco');
+  const muteBtn= document.getElementById('muteBtn');
+  const volIco = document.getElementById('volIco');
+  const volSl  = document.getElementById('volSl');
+  const prog   = document.getElementById('progWrap');
+  const fill   = document.getElementById('progFill');
+  const thumb  = document.getElementById('progThumb');
+  const buf    = document.getElementById('progBuf');
+  const tt     = document.getElementById('progTt');
+  const cur    = document.getElementById('curTime');
+  const tot    = document.getElementById('totTime');
+  const fsBtn  = document.getElementById('fsBtn');
+  const fsIco  = document.getElementById('fsIco');
+  const skip   = document.getElementById('skipBtn');
+  const ripple = document.getElementById('ripple');
+  const seekL  = document.getElementById('seekL');
+  const seekR  = document.getElementById('seekR');
+  const kbd    = document.getElementById('kbdHint');
+  const sets   = document.getElementById('settingsBtn');
+  const panel  = document.getElementById('settingsPanel');
+  const pip    = document.getElementById('pipBtn');
+  const prev   = document.getElementById('prevBtn');
+  const next   = document.getElementById('nextBtn');
+
+  function fmt(s) {
+    if (!s||isNaN(s)) return '0:00';
+    const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=Math.floor(s%60);
+    return h>0?`${h}:${pad(m)}:${pad(sec)}`:`${m}:${pad(sec)}`;
+  }
+  function pad(n) { return String(n).padStart(2,'0'); }
+
+  function showKbd(msg) {
+    kbd.textContent=msg; kbd.classList.add('show');
+    clearTimeout(kbdTimer); kbdTimer=setTimeout(()=>kbd.classList.remove('show'),1600);
+  }
+  function showCtrl() {
+    wrap.classList.remove('hidden-ctrl');
+    clearTimeout(ctrlTimer);
+    if (isPlaying) ctrlTimer=setTimeout(()=>wrap.classList.add('hidden-ctrl'),3200);
+  }
+  function showSeek(dir, label) {
+    const el=dir==='l'?seekL:seekR;
+    el.textContent=dir==='l'?`⏪ ${label} ثانية`:`⏩ ${label} ثانية`;
+    el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),800);
+  }
+  function showRipple(type) {
+    const path=type==='play'?'M8 5v14l11-7z':'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
+    ripple.querySelector('svg').innerHTML=`<path d="${path}"/>`;
+    ripple.classList.remove('hide'); ripple.classList.add('show');
+    setTimeout(()=>{ ripple.classList.remove('show'); ripple.classList.add('hide');
+      setTimeout(()=>ripple.classList.remove('hide'),400); },600);
+  }
+  function togglePlay() {
+    if (video.paused) { video.play(); showRipple('play'); }
+    else { video.pause(); showRipple('pause'); }
+  }
+  function toggleFs() {
+    if (!document.fullscreenElement) wrap.requestFullscreen().catch(()=>{});
+    else document.exitFullscreen();
+  }
+  function updateVol() {
+    const v=video.volume, m=video.muted;
+    let p='';
+    if(m||v===0) p='<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+    else if(v<0.5) p='<path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>';
+    else p='<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+    volIco.innerHTML=p;
+  }
+
+  // ── Load stream from AnimePahe via RAFN server ──
+  let currentStream = null;
+
+  setStatus('جاري البحث عن الحلقة...');
+  rafnGetStream(currentAnime, currentEpisode).then(stream => {
+    if (!stream?.url) {
+      setStatus('');
+      showErr(`لم يُعثر على بث للحلقة ${currentEpisode}\nجرب حلقة أخرى أو انتظر دقيقة وأعد المحاولة`);
+      return;
+    }
+    currentStream = stream;
+    setStatus(`✅ AnimePahe — ${stream.quality}`);
+
+    // بناء أزرار الجودة في لوحة الإعدادات
+    const qualOpts = document.getElementById('qualOpts');
+    if (qualOpts && stream.allSources?.length > 1) {
+      qualOpts.innerHTML = stream.allSources.map(s =>
+        `<div class="sp-opt ${s.url===stream.url?'active':''}" data-url="${s.url}" onclick="switchQuality('${s.url}','${s.quality||'auto'}',this)">
+          <span>${s.quality||'auto'}</span><span class="ck">✓</span>
+        </div>`
+      ).join('');
+    }
+
+    loadStream(stream.url, video, stream.headers);
+  });
+
+  // تغيير الجودة من لوحة الإعدادات
+  window.switchQuality = function(url, quality, el) {
+    document.querySelectorAll('#qualOpts .sp-opt').forEach(o=>o.classList.remove('active'));
+    el.classList.add('active');
+    setStatus(`جاري تحميل جودة ${quality}...`);
+    loadStream(url, video, currentStream?.headers || {});
+    toast(`✅ جودة ${quality}`);
+  };
+
+  function loadStream(url, vid, headers={}) {
+    if (hls) { hls.destroy(); hls=null; }
+    if (url.includes('.m3u8') || url.includes('m3u8')) {
+      if (Hls.isSupported()) {
+        hls = new Hls({
+          maxBufferLength: 60,
+          startLevel: -1,
+          xhrSetup: function(xhr) {
+            // AnimePahe يحتاج Referer
+            if (headers?.Referer) {
+              try { xhr.setRequestHeader('Referer', headers.Referer); } catch{}
+            }
+          }
+        });
+        hls.loadSource(url);
+        hls.attachMedia(vid);
+        hls.on(Hls.Events.MANIFEST_PARSED, (e, d) => {
+          buildQual(d.levels);
+          hideLoad();
+          vid.play().catch(()=>{});
+        });
+        hls.on(Hls.Events.ERROR, (_,d) => {
+          if(d.fatal) { setStatus(''); showErr('خطأ في تحميل الستريم'); }
+        });
+      } else if (vid.canPlayType('application/vnd.apple.mpegurl')) {
+        vid.src=url; vid.play().catch(()=>{}); hideLoad();
+      }
+    } else {
+      vid.src=url; hideLoad(); vid.play().catch(()=>{});
+    }
+  }
+
+  // expose for server switcher
+  window._loadStream = loadStream;
+  window._video = video;
+
+  function buildQual(levels) {
+    const c = document.getElementById('qualOpts'); if(!c) return;
+    const opts = [{lbl:'تلقائي', val:-1}, ...levels.filter(l=>l.height).map((l,i)=>({lbl:`${l.height}p`, val:i}))];
+    c.innerHTML = opts.map((o,i)=>`<div class="sp-opt ${i===0?'active':''}" data-q="${o.val}"><span>${o.lbl}</span><span class="ck">✓</span></div>`).join('');
+    c.querySelectorAll('[data-q]').forEach(el=>{
+      el.addEventListener('click',()=>{
+        c.querySelectorAll('[data-q]').forEach(e=>e.classList.remove('active'));
+        el.classList.add('active');
+        if(hls) hls.currentLevel=parseInt(el.dataset.q);
+        panel.classList.remove('open');
+      });
+    });
+  }
+
+  function setStatus(msg) {
+    const el=document.getElementById('plStatus'); if(el) el.textContent=msg;
+  }
+  function hideLoad() {
+    const el=document.getElementById('plLoad'); if(el){el.classList.add('hide');}
+  }
+  function showErr(msg) {
+    document.getElementById('plErr').classList.add('show');
+    document.getElementById('plErrMsg').innerHTML = msg + '<br><small style="color:var(--text3);font-size:.7rem">أو استخدم زر Miruro كبديل</small>';
+  }
+
+  // expose retry
+  window.retryStream = function() {
+    document.getElementById('plErr').classList.remove('show');
+    document.getElementById('plLoad').classList.remove('hide');
+    document.getElementById('plLoad').style.opacity='1';
+    document.getElementById('plLoad').style.visibility='visible';
+    setStatus('إعادة المحاولة...');
+    rafnGetStream(currentAnime, currentEpisode).then(s => {
+      if (!s?.url) { setStatus(''); showErr('لم يُعثر على بث'); return; }
+      currentStream = s;
+      setStatus(`✅ AnimePahe — ${s.quality}`);
+      loadStream(s.url, video, s.headers || {});
+    });
+  };
+
+  // ── Events ──
+  video.addEventListener('play', ()=>{ isPlaying=true; playIco.innerHTML='<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; });
+  video.addEventListener('pause', ()=>{ isPlaying=false; playIco.innerHTML='<path d="M8 5v14l11-7z"/>'; showCtrl(); });
+  video.addEventListener('waiting', ()=>{ const s=document.getElementById('plLoad'); /* spinner already hidden */ });
+  video.addEventListener('timeupdate', ()=>{
+    if(!video.duration) return;
+    const p=(video.currentTime/video.duration)*100;
+    fill.style.width=p+'%'; thumb.style.left=p+'%';
+    cur.textContent=fmt(video.currentTime);
+    // skip
+    if(video.currentTime>=skipStart && video.currentTime<=skipEnd) skip.classList.add('show');
+    else skip.classList.remove('show');
+  });
+  video.addEventListener('loadedmetadata', ()=>{ tot.textContent=fmt(video.duration); });
+  video.addEventListener('progress', ()=>{
+    if(!video.duration) return;
+    for(let i=0;i<video.buffered.length;i++) buf.style.width=((video.buffered.end(i)/video.duration)*100)+'%';
+  });
+
+  playBtn.addEventListener('click', togglePlay);
+  video.addEventListener('click', ()=>{ togglePlay(); showCtrl(); });
+  video.addEventListener('dblclick', toggleFs);
+  wrap.addEventListener('mousemove', e=>{showCtrl();});
+  wrap.addEventListener('mouseleave', ()=>{ if(isPlaying) wrap.classList.add('hidden-ctrl'); });
+
+  // progress
+  prog.addEventListener('mousedown', e=>{
+    isDragging=true;
+    const r=prog.getBoundingClientRect();
+    video.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*video.duration;
+  });
+  prog.addEventListener('mousemove', e=>{
+    const r=prog.getBoundingClientRect();
+    const x=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
+    tt.style.left=(x*100)+'%';
+    tt.textContent=video.duration?fmt(x*video.duration):'0:00';
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    const r=prog.getBoundingClientRect();
+    video.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*(video.duration||0);
+  });
+  document.addEventListener('mouseup', ()=>{ isDragging=false; });
+
+  volSl.addEventListener('input', ()=>{ video.volume=parseFloat(volSl.value); video.muted=video.volume===0; updateVol(); });
+  muteBtn.addEventListener('click', ()=>{ video.muted=!video.muted; if(!video.muted&&video.volume===0){video.volume=.5;volSl.value=.5;} updateVol(); });
+
+  fsBtn.addEventListener('click', toggleFs);
+  document.addEventListener('fullscreenchange', ()=>{
+    fsIco.innerHTML=document.fullscreenElement
+      ?'<path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>'
+      :'<path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>';
+  });
+
+  pip.addEventListener('click', async ()=>{
+    if(document.pictureInPictureElement) await document.exitPictureInPicture();
+    else try{ await video.requestPictureInPicture(); } catch{}
+  });
+
+  skip.addEventListener('click', ()=>{ video.currentTime=skipEnd; skip.classList.remove('show'); showKbd('⏭ تم تخطي الأوبنينج'); });
+
+  sets.addEventListener('click', e=>{ e.stopPropagation(); panel.classList.toggle('open'); });
+  document.addEventListener('click', e=>{ if(!panel.contains(e.target)&&e.target!==sets) panel.classList.remove('open'); });
+
+  document.querySelectorAll('[data-spd]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('[data-spd]').forEach(e=>e.classList.remove('active'));
+      el.classList.add('active'); speed=parseFloat(el.dataset.spd); video.playbackRate=speed;
+      showKbd(`⚡ سرعة: ${el.querySelector('span').textContent}`);
+      panel.classList.remove('open');
+    });
+  });
+
+  prev.addEventListener('click', ()=>{ if(currentEpisode>1) changeEp(currentEpisode-1); else showKbd('هذه أول حلقة'); });
+  next.addEventListener('click', ()=>{ const eps=parseInt(currentAnime?.episodes||100); if(currentEpisode<eps) changeEp(currentEpisode+1); else showKbd('لا توجد حلقة تالية'); });
+
+  // keyboard
+  document.addEventListener('keydown', e=>{
+    if(!document.getElementById('rv')) return;
+    if(['input','textarea'].includes(e.target.tagName.toLowerCase())) return;
+    switch(e.key) {
+      case ' ': case 'k': e.preventDefault(); togglePlay(); showCtrl(); break;
+      case 'ArrowRight': e.preventDefault(); video.currentTime=Math.min(video.duration,video.currentTime+10); showSeek('r','+10'); showCtrl(); break;
+      case 'ArrowLeft': e.preventDefault(); video.currentTime=Math.max(0,video.currentTime-10); showSeek('l','-10'); showCtrl(); break;
+      case 'ArrowUp': e.preventDefault(); video.volume=Math.min(1,video.volume+.1); volSl.value=video.volume; updateVol(); showKbd(`🔊 ${Math.round(video.volume*100)}%`); break;
+      case 'ArrowDown': e.preventDefault(); video.volume=Math.max(0,video.volume-.1); volSl.value=video.volume; updateVol(); showKbd(`🔊 ${Math.round(video.volume*100)}%`); break;
+      case 'm': case 'M': video.muted=!video.muted; updateVol(); showKbd(video.muted?'🔇 صامت':'🔊 صوت'); break;
+      case 'f': case 'F': toggleFs(); break;
+      case 'i': case 'I': pip.click(); break;
+    }
+  });
+}
+
+// ════════════════════════════════════════
+//  SERVER SWITCH (Miruro fallback)
+// ════════════════════════════════════════
+function switchToRafn() {
+  document.getElementById('srvRafn').classList.add('active');
+  document.getElementById('srvMiruro').classList.remove('active');
+  changeEp(currentEpisode);
+}
+function switchToMiruro() {
+  document.getElementById('srvMiruro').classList.add('active');
+  document.getElementById('srvRafn').classList.remove('active');
+  // Replace player with iframe
+  const wrap = document.getElementById('playerWrap');
+  const malId = currentAnime?.mal_id;
+  wrap.innerHTML = `<iframe src="https://www.miruro.tv/watch?id=${malId}&ep=${currentEpisode}" style="width:100%;height:100%;border:none;position:absolute;inset:0" allowfullscreen allow="autoplay;fullscreen"></iframe>`;
+  showToast('🌐 تم التبديل إلى Miruro');
+}
+
+function changeEp(n) { currentEpisode=n; buildWatch(); window.scrollTo(0,0); }
+
+// ════════════════════════════════════════
+//  FAVORITES
+// ════════════════════════════════════════
+function isFav(id) { return JSON.parse(localStorage.getItem('rafn_favs')||'[]').some(f=>f.id===id); }
+function toggleFav(id, title) {
+  let f=JSON.parse(localStorage.getItem('rafn_favs')||'[]');
+  const i=f.findIndex(x=>x.id===id);
+  if(i===-1){f.push({id,title});showToast(`✅ أُضيف "${title}" للمفضلة`);}
+  else{f.splice(i,1);showToast(`❌ حُذف "${title}"`);}
+  localStorage.setItem('rafn_favs', JSON.stringify(f));
+  const btn=document.getElementById(`favBtn-${id}`);
+  if(btn) btn.innerHTML=isFav(id)?'❤️ في المفضلة':'♡ المفضلة';
+}
+
+// ════════════════════════════════════════
+//  SEARCH
+// ════════════════════════════════════════
+document.getElementById('searchInput').addEventListener('input', function() {
+  clearTimeout(searchTimer);
+  const q=this.value.trim(), drop=document.getElementById('sdrop');
+  if(q.length<2){drop.classList.remove('open');return;}
+  searchTimer=setTimeout(async()=>{
+    const d=await jikan('/anime',{q,limit:7,order_by:'popularity',sort:'asc'});
+    if(!d?.data) return;
+    drop.innerHTML=d.data.map(a=>`
+      <div class="si-item" onclick="handleCard('${enc(a)}');document.getElementById('sdrop').classList.remove('open');document.getElementById('searchInput').value=''">
+        <img src="${gi(a)}" onerror="this.style.display='none'">
+        <div><div class="si-ttl">${a.title||''}</div><div class="si-meta">${a.type||''} ${a.year?'· '+a.year:''} ${a.score?'· ⭐'+a.score:''}</div></div>
+      </div>`).join('');
+    const q2=this.value.trim();
+    drop.innerHTML+=`<div class="si-item" style="color:var(--accent);justify-content:center;font-size:.8rem" onclick="fullSearch('${q2.replace(/'/g,"\\'")}');document.getElementById('sdrop').classList.remove('open')">عرض كل النتائج لـ "${q2}" →</div>`;
+    drop.classList.add('open');
+  },380);
+});
+document.getElementById('searchInput').addEventListener('keydown', function(e){
+  if(e.key==='Enter'){const q=this.value.trim();if(q)fullSearch(q);document.getElementById('sdrop').classList.remove('open');}
+  if(e.key==='Escape') document.getElementById('sdrop').classList.remove('open');
+});
+document.addEventListener('click', e=>{ if(!e.target.closest('.nav-search')) document.getElementById('sdrop').classList.remove('open'); });
+function fullSearch(q){showPage('search');document.getElementById('searchInput').value='';document.getElementById('searchPageInput').value=q;searchPage(q);}
+async function searchPage(q) {
+  clearTimeout(searchPageTimer);
+  const g=document.getElementById('searchGrid');
+  if(q.length<2){g.innerHTML='<div class="empty"><div class="ico">🔍</div><p>ابحث عن أي أنمي</p></div>';return;}
+  g.innerHTML='<div class="spinner"></div>';
+  searchPageTimer=setTimeout(async()=>{
+    const d=await jikan('/anime',{q,limit:24});
+    d?.data?.length?buildGrid('searchGrid',d.data):(g.innerHTML=`<div class="empty"><div class="ico">😔</div><p>لا نتائج لـ "${q}"</p></div>`);
+  },450);
+}
+
+// ════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function ts(s){return{'Currently Airing':'يُبث الآن','Finished Airing':'انتهى','Not yet aired':'لم يُبث بعد'}[s]||s||'—';}
+function tg(g){return{'Action':'أكشن','Adventure':'مغامرة','Comedy':'كوميدي','Drama':'دراما','Fantasy':'خيال','Horror':'رعب','Mystery':'غموض','Romance':'رومانسي','Sci-Fi':'خيال علمي','Slice of Life':'شريحة من الحياة','Sports':'رياضة','Supernatural':'خارق','Mecha':'ميكا','Psychological':'نفسي','School':'مدرسي','Isekai':'إيسيكاي','Shounen':'شونن','Seinen':'سينين'}[g]||g;}
+
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
+initHome();
+</script>
+</body>
+</html>
