@@ -465,6 +465,13 @@ async function jikan(path, params={}) {
 //  الخطوات: بحث → جلب الحلقات → جلب رابط البث
 // ════════════════════════════════════════
 
+// setStatus global — تشتغل حتى قبل فتح المشغّل
+function setStatus(msg) {
+  const el = document.getElementById('plStatus');
+  if (el) el.textContent = msg;
+  console.log('[RAFN]', msg);
+}
+
 // كاش لتسريع الطلبات
 const paheCache = {};
 
@@ -1183,9 +1190,7 @@ function initPlayer() {
     });
   }
 
-  function setStatus(msg) {
-    const el=document.getElementById('plStatus'); if(el) el.textContent=msg;
-  }
+  // setStatus معرّفة globally فوق
   function hideLoad() {
     const el=document.getElementById('plLoad'); if(el){el.classList.add('hide');}
   }
